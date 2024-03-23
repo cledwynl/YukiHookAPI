@@ -25,6 +25,7 @@ package com.highcapable.yukihookapi.demo_module.ui
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import com.highcapable.yukihookapi.YukiHookAPI
 import com.highcapable.yukihookapi.demo_module.R
@@ -47,6 +48,7 @@ class MainActivity : ModuleAppCompatActivity() {
             moduleEnvironment {
                 dataChannel(packageName = "com.highcapable.yukihookapi.demo_app").with {
                     wait(DataConst.TEST_CN_DATA) {
+                        Log.d("YukiHookAPI-Demo", "got")
                         Toast.makeText(applicationContext, it, Toast.LENGTH_SHORT).show()
                     }
                 }

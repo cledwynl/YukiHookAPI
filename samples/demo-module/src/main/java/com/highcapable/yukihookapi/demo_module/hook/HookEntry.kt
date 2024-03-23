@@ -26,6 +26,8 @@ package com.highcapable.yukihookapi.demo_module.hook
 import android.app.Activity
 import android.content.Intent
 import android.os.Build
+import android.os.Handler
+import android.os.Looper
 import android.widget.Button
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.highcapable.yukihookapi.YukiHookAPI
@@ -40,6 +42,7 @@ import com.highcapable.yukihookapi.hook.factory.constructor
 import com.highcapable.yukihookapi.hook.factory.field
 import com.highcapable.yukihookapi.hook.factory.method
 import com.highcapable.yukihookapi.hook.factory.registerModuleAppActivities
+import com.highcapable.yukihookapi.hook.log.YLog
 import com.highcapable.yukihookapi.hook.type.android.ActivityClass
 import com.highcapable.yukihookapi.hook.type.android.BundleClass
 import com.highcapable.yukihookapi.hook.type.java.StringArrayClass
@@ -299,7 +302,13 @@ object HookEntry : IYukiHookXposedInit {
                                                     }.setNegativeButton("NO", null).show().compatStyle()
                                             }
                                     }.setNegativeButton("SEND MSG TO MODULE") { _, _ ->
-                                        dataChannel.put(DataConst.TEST_CN_DATA, value = "I am host, can you hear me?")
+                                        val intent = Intent(Intent.ACTION_MAIN)
+                                        intent.setClassName("com.highcapable.yukihookapi.demo_module", "com.highcapable.yukihookapi.demo_module.ui.MainActivity")
+                                        context.startActivity(intent)
+                                        Handler(Looper.getMainLooper()).postDelayed({
+                                            dataChannel.put(DataConst.TEST_CN_DATA, value = "I am host, can you hear me?")
+                                            YLog.debug("message sent")
+                                        }, 3000)
                                     }.setNeutralButton("REMOVE HOOK") { _, _ ->
                                         removeSelf()
                                     }.show().compatStyle()
